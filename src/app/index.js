@@ -1,6 +1,8 @@
 import { ScrollView, Text } from "react-native";
 import Titre from "../components/Titre";
 import PokemonCard from "../components/PokemonCard";
+import Aide from "../components/Aide";
+import CompteurPokeballs from "../components/CompteurPokeballs";
 
 const ARTWORK =
 "https://raw.githubusercontent.com/PokeAPI/sprites" +
@@ -20,6 +22,8 @@ export default function Index() {
     <ScrollView contentContainerStyle={styles.container}>
       <Titre />
       <Text style={styles.pokemonCount}>{POKEMONS.length} Pokémon</Text>
+      <CompteurPokeballs />
+      <Aide />
       {POKEMONS.map((pokemon) => (
         <PokemonCard
           key={pokemon.number}

@@ -1,51 +1,60 @@
-import { Image, Text, View } from "react-native";
+import { useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function PokemonCard({ number, name, type, image }) {
+const ARTWORK =
+    "https://raw.githubusercontent.com/PokeAPI/sprites" +
+    "/master/sprites/pokemon/other/official-artwork/";
+
+const TYPE_COLORS = {
+    Plante: "#78C850",
+    Feu: "#F08030",
+    Eau: "#6890F0",
+    Électrik: "#F8D030",
+};
+    
+export default function PokemonCard({ number, name, type }) {
+    const color = TYPE_COLORS[type];
+    const [captured, setCaptured] = useState(false);
     return (
-        <View style={styles.card}>
-            <Image source={{ uri: image }} style={styles.image} />
+        <View style={[styles.card, { backgroundColor: color }]}>
+            <Image source={{ uri: `${ARTWORK}${number}.png` }} style={styles.image} />
             <View>
                 <Text style={styles.number}>#{number}</Text>
                 <Text style={styles.name}>{name}</Text>
                 <Text style={styles.type}>{type}</Text>
             </View>
+            <Pressable
+                onPress={() => setCaptured(!captured)}
+                style={[styles.button, captured && styles.buttonCaptured]}
+            >
+                <Text style={[styles.buttonText, captured && styles.buttonTextCaptured]}>
+                    {captured ? "Captured" : "Capture"}
+                </Text>
+            </Pressable>
         </View>
     );
+
 }
 
-export const styles = {
+
+const styles = StyleSheet.create({
     card: {
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        gap: 10,
+        flexDirection: "row", alignItems: "center", gap: 12,
+        padding: 12, borderRadius: 14
     },
-
-    image: {
-        width: 80,
-        height: 80,
-        marginRight: 10
-    },
-
-    number: {
-        color: "gray",
-    },
-
-    name: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-
+    image: { width: 80, height: 80 },
+    number: { color: "#888888" },
+    name: { fontSize: 18, fontWeight: "bold" },
     type: {
-        color: "gray",
-        backgroundColor: "#ECE8DE",
-        borderRadius: 20,
-        alignSelf: "flex-start",
-        paddingHorizontal: 10,
-        paddingVertical: 2,
-        fontWeight: "bold",
-        marginTop: 10,
+        alignSelf: "flex-start", backgroundColor: "#ECE8DE",
+        paddingHorizontal: 10, borderRadius: 10, overflow: "hidden"
     },
-}
+    button: {
+        backgroundColor: "#ECE8DE",
+        paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10
+    },
+    buttonCaptured: { backgroundColor: "#2563EB" },
+    buttonText: { fontWeight: "bold", color: "#333333" },
+    buttonTextCaptured: { color: "#FFFFFF" },
+
+});

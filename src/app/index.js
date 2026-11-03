@@ -1,12 +1,7 @@
-import { ScrollView, Text } from "react-native";
-import Titre from "../components/Titre";
+import { useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
 import PokemonCard from "../components/PokemonCard";
-import Aide from "../components/Aide";
-import CompteurPokeballs from "../components/CompteurPokeballs";
-
-const ARTWORK =
-"https://raw.githubusercontent.com/PokeAPI/sprites" +
-"/master/sprites/pokemon/other/official-artwork/";
+import Titre from "../components/Titre";
 
 const POKEMONS = [
   { number: 1, name: "Bulbizarre", type: "Plante" },
@@ -18,33 +13,49 @@ const POKEMONS = [
 ];
 
 export default function Index() {
+  const [onlyFire, setOnlyFire] = useState(false);
+
+  const displayed = onlyFire
+    ? POKEMONS.filter((p) => p.type === "Feu")
+    : POKEMONS;
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Titre />
-      <Text style={styles.pokemonCount}>{POKEMONS.length} Pokémon</Text>
-      <CompteurPokeballs />
-      <Aide />
-      {POKEMONS.map((pokemon) => (
+    <ScrollView contentContainerStyle={styles.scrollView}>
+      <Titre texte="Mon Pokédex" />
+      <Text>{displayed.length} Pokémon</Text>
+
+      <Pressable
+        onPress={() => setOnlyFire(!onlyFire)}
+        style={[styles.filterButton, onlyFire && styles.filterButtonActive]}
+      >
+        <Text style={[styles.filterText, onlyFire && styles.filterTextActive]}>
+          {onlyFire ? "Afficher tous les Pokémon" : "Afficher seulement le type Feu"}
+        </Text>
+      </Pressable>
+
+
+      {displayed.map((p) => (
         <PokemonCard
-          key={pokemon.number}
-          number={pokemon.number}
-          name={pokemon.name}
-          type={pokemon.type}
-          image={`${ARTWORK}${pokemon.number}.png`}
+          key={p.number}
+          number={p.number}
+          name={p.name}
+          type={p.type}
         />
       ))}
     </ScrollView>
   );
 }
 
-const styles = {
-  container: {
-    alignItems: "left",
-    padding: 20,
-    gap: 10,
+const styles = StyleSheet.create({
+  scrollView: {
+    padding: 16, gap: 12
   },
-  pokemonCount: {
-    color: "gray",
-    fontSize: 15,
+  filterButton: {
+    alignSelf: "flex-start",
+    backgroundColor: "#ECE8DE",
+    paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10
   },
-};
+  filterButtonActive: { backgroundColor: "#F08030" },
+  filterText: { fontWeight: "bold", color: "#333333" },
+  filterTextActive: { color: "#FFFFFF" },
+});

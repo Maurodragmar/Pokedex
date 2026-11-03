@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 const ARTWORK =
@@ -21,9 +20,8 @@ const TYPE_COLORS = {
     Spectre: "#705898",
 };
     
-export default function PokemonCard({ number, name, type }) {
+export default function PokemonCard({ number, name, type, captured, onToggleCaptured }) {
     const color = TYPE_COLORS[type] ?? "#A8A878";
-    const [captured, setCaptured] = useState(false);
     return (
         <View style={[styles.card, { backgroundColor: color }]}>
             <Image source={{ uri: `${ARTWORK}${number}.png` }} style={styles.image} />
@@ -33,7 +31,7 @@ export default function PokemonCard({ number, name, type }) {
                 <Text style={styles.type}>{type}</Text>
             </View>
             <Pressable
-                onPress={() => setCaptured(!captured)}
+                onPress={() => onToggleCaptured(number)}
                 style={[styles.button, captured && styles.buttonCaptured]}
             >
                 <Text style={[styles.buttonText, captured && styles.buttonTextCaptured]}>

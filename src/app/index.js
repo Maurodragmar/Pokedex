@@ -5,12 +5,28 @@ import Titre from "../components/Titre";
 import POKEMONS from "../data/pokemons";
 
 export default function Index() {
-  const [onlyFire, setOnlyFire] = useState(false);
-  const displayed = onlyFire ? POKEMONS.filter((pokemon) => pokemon.type === "Feu") : POKEMONS;
+  const [capturedNumbers, setCapturedNumbers] = useState(() => new Set());
+  const [showCaptures, setShowCaptures] = useState(false);
+  const displayed = showCaptures
+    ? POKEMONS.filter((pokemon) => capturedNumbers.has(pokemon.number))
+    : POKEMONS;
+
+  function toggleCaptured(number) {
+    setCapturedNumbers((current) => {
+      const updated = new Set(current);
+      if (updated.has(number)) {
+        updated.delete(number);
+      } else {
+        updated.add(number);
+      }
+      return updated;
+    });
+  }
 
   return (
     <FlatList
       data={displayed}
+      extraData={capturedNumbers}
       keyExtractor={(pokemon) => String(pokemon.number)}
       numColumns={2}
       columnWrapperStyle={styles.column}
@@ -18,19 +34,25 @@ export default function Index() {
       ListHeaderComponent={
         <View style={styles.header}>
           <Titre texte="Mon Pokédex" />
-          <Text>{displayed.length} Pokémon</Text>
+          <Text>Pokémon capturés : {capturedNumbers.size}</Text>
           <Pressable
-            onPress={() => setOnlyFire(!onlyFire)}
-            style={[styles.filterButton, onlyFire && styles.filterButtonActive]}
+            onPress={() => setShowCaptures((current) => !current)}
+            style={[styles.filterButton, showCaptures && styles.filterButtonActive]}
           >
-            <Text style={[styles.filterText, onlyFire && styles.filterTextActive]}>
-              {onlyFire ? "Afficher tous les Pokémon" : "Afficher seulement le type Feu"}
+            <Text style={[styles.filterText, showCaptures && styles.filterTextActive]}>
+              {showCaptures ? "Afficher tous les Pokémon" : "Mes captures"}
             </Text>
           </Pressable>
         </View>
       }
       renderItem={({ item }) => (
-        <PokemonCard number={item.number} name={item.name} type={item.type} />
+        <PokemonCard
+          number={item.number}
+          name={item.name}
+          type={item.type}
+          captured={capturedNumbers.has(item.number)}
+          onToggleCaptured={toggleCaptured}
+        />
       )}
     />
   );

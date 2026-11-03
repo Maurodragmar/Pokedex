@@ -10,15 +10,24 @@ const TYPE_COLORS = {
     Feu: "#F08030",
     Eau: "#6890F0",
     Électrik: "#F8D030",
+    Insecte: "#A8B820",
+    Normal: "#A8A878",
+    Poison: "#A040A0",
+    Sol: "#E0C068",
+    Fée: "#EE99AC",
+    Combat: "#C03028",
+    Psy: "#F85888",
+    Roche: "#B8A038",
+    Spectre: "#705898",
 };
     
 export default function PokemonCard({ number, name, type }) {
-    const color = TYPE_COLORS[type];
+    const color = TYPE_COLORS[type] ?? "#A8A878";
     const [captured, setCaptured] = useState(false);
     return (
         <View style={[styles.card, { backgroundColor: color }]}>
             <Image source={{ uri: `${ARTWORK}${number}.png` }} style={styles.image} />
-            <View>
+            <View style={styles.details}>
                 <Text style={styles.number}>#{number}</Text>
                 <Text style={styles.name}>{name}</Text>
                 <Text style={styles.type}>{type}</Text>
@@ -39,19 +48,29 @@ export default function PokemonCard({ number, name, type }) {
 
 const styles = StyleSheet.create({
     card: {
-        flexDirection: "row", alignItems: "center", gap: 12,
-        padding: 12, borderRadius: 14
+        flex: 1,
+        minWidth: 0,
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 8,
+        padding: 12,
+        borderRadius: 14,
     },
-    image: { width: 80, height: 80 },
-    number: { color: "#888888" },
-    name: { fontSize: 18, fontWeight: "bold" },
+    image: { width: 96, height: 96 },
+    details: { alignItems: "center", gap: 4 },
+    number: { color: "#555555" },
+    name: { fontSize: 18, fontWeight: "bold", textAlign: "center" },
     type: {
-        alignSelf: "flex-start", backgroundColor: "#ECE8DE",
-        paddingHorizontal: 10, borderRadius: 10, overflow: "hidden"
+        backgroundColor: "#ECE8DE",
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        overflow: "hidden",
     },
     button: {
         backgroundColor: "#ECE8DE",
-        paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+        borderRadius: 10,
     },
     buttonCaptured: { backgroundColor: "#2563EB" },
     buttonText: { fontWeight: "bold", color: "#333333" },

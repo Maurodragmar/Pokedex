@@ -1,59 +1,51 @@
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import PokemonCard from "../components/PokemonCard";
 import Titre from "../components/Titre";
-
-const POKEMONS = [
-  { number: 1, name: "Bulbizarre", type: "Plante" },
-  { number: 4, name: "Salamèche", type: "Feu" },
-  { number: 7, name: "Carapuce", type: "Eau" },
-  { number: 25, name: "Pikachu", type: "Électrik" },
-  { number: 37, name: "Goupix", type: "Feu" },
-  { number: 43, name: "Mystherbe", type: "Plante" },
-];
+import POKEMONS from "../data/pokemons";
 
 export default function Index() {
   const [onlyFire, setOnlyFire] = useState(false);
-
-  const displayed = onlyFire
-    ? POKEMONS.filter((p) => p.type === "Feu")
-    : POKEMONS;
+  const displayed = onlyFire ? POKEMONS.filter((pokemon) => pokemon.type === "Feu") : POKEMONS;
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
-      <Titre texte="Mon Pokédex" />
-      <Text>{displayed.length} Pokémon</Text>
-
-      <Pressable
-        onPress={() => setOnlyFire(!onlyFire)}
-        style={[styles.filterButton, onlyFire && styles.filterButtonActive]}
-      >
-        <Text style={[styles.filterText, onlyFire && styles.filterTextActive]}>
-          {onlyFire ? "Afficher tous les Pokémon" : "Afficher seulement le type Feu"}
-        </Text>
-      </Pressable>
-
-
-      {displayed.map((p) => (
-        <PokemonCard
-          key={p.number}
-          number={p.number}
-          name={p.name}
-          type={p.type}
-        />
-      ))}
-    </ScrollView>
+    <FlatList
+      data={displayed}
+      keyExtractor={(pokemon) => String(pokemon.number)}
+      numColumns={2}
+      columnWrapperStyle={styles.column}
+      contentContainerStyle={styles.listContent}
+      ListHeaderComponent={
+        <View style={styles.header}>
+          <Titre texte="Mon Pokédex" />
+          <Text>{displayed.length} Pokémon</Text>
+          <Pressable
+            onPress={() => setOnlyFire(!onlyFire)}
+            style={[styles.filterButton, onlyFire && styles.filterButtonActive]}
+          >
+            <Text style={[styles.filterText, onlyFire && styles.filterTextActive]}>
+              {onlyFire ? "Afficher tous les Pokémon" : "Afficher seulement le type Feu"}
+            </Text>
+          </Pressable>
+        </View>
+      }
+      renderItem={({ item }) => (
+        <PokemonCard number={item.number} name={item.name} type={item.type} />
+      )}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    padding: 16, gap: 12
-  },
+  listContent: { padding: 16, gap: 12 },
+  column: { gap: 12 },
+  header: { gap: 12 },
   filterButton: {
     alignSelf: "flex-start",
     backgroundColor: "#ECE8DE",
-    paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 10,
   },
   filterButtonActive: { backgroundColor: "#F08030" },
   filterText: { fontWeight: "bold", color: "#333333" },

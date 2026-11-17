@@ -1,0 +1,100 @@
+{
+  "apiRoutes": [],
+  "htmlRoutes": [
+    {
+      "file": "./(tabs)/index.js",
+      "page": "/(tabs)/index",
+      "namedRegex": "^(?:/\\(tabs\\))?(?:/)?$",
+      "routeKeys": {},
+      "assets": {
+        "css": [],
+        "js": [
+          "/_expo/static/js/web/_layout-4988120aa677f8fc2374f73e54bfe68e.js",
+          "/_expo/static/js/web/_layout-0199f903bfe811d2b6b52937c0f7202d.js",
+          "/_expo/static/js/web/index-f96ef3abfcc8feb43319d2c959eb1bc2.js"
+        ]
+      }
+    },
+    {
+      "file": "./index.js",
+      "page": "/index",
+      "namedRegex": "^/(?:/)?$",
+      "routeKeys": {},
+      "assets": {
+        "css": [],
+        "js": [
+          "/_expo/static/js/web/_layout-4988120aa677f8fc2374f73e54bfe68e.js",
+          "/_expo/static/js/web/index-f6826ca492a3562fae179b90eb9dd182.js"
+        ]
+      }
+    },
+    {
+      "file": "./(tabs)/profil.js",
+      "page": "/(tabs)/profil",
+      "namedRegex": "^(?:/\\(tabs\\))?/profil(?:/)?$",
+      "routeKeys": {},
+      "assets": {
+        "css": [],
+        "js": [
+          "/_expo/static/js/web/_layout-4988120aa677f8fc2374f73e54bfe68e.js",
+          "/_expo/static/js/web/_layout-0199f903bfe811d2b6b52937c0f7202d.js",
+          "/_expo/static/js/web/profil-fccc27c5753f3e71a17603a6af5b6ca6.js"
+        ]
+      }
+    },
+    {
+      "file": "expo-router/build/views/Sitemap.js",
+      "page": "/_sitemap",
+      "namedRegex": "^/_sitemap(?:/)?$",
+      "routeKeys": {},
+      "generated": true,
+      "assets": {
+        "css": [],
+        "js": [
+          "/_expo/static/js/web/_layout-4988120aa677f8fc2374f73e54bfe68e.js"
+        ]
+      }
+    },
+    {
+      "file": "./pokemon/[number].js",
+      "page": "/pokemon/[number]",
+      "namedRegex": "^/pokemon/(?<number>[^/]+?)(?:/)?$",
+      "routeKeys": {
+        "number": "number"
+      },
+      "assets": {
+        "css": [],
+        "js": [
+          "/_expo/static/js/web/_layout-4988120aa677f8fc2374f73e54bfe68e.js",
+          "/_expo/static/js/web/[number]-315cf89b4160457448ee3bbff29ba060.js"
+        ]
+      }
+    }
+  ],
+  "notFoundRoutes": [
+    {
+      "file": "expo-router/build/views/Unmatched.js",
+      "page": "/+not-found",
+      "namedRegex": "^(?:/(?<notfound>.+?))?(?:/)?$",
+      "routeKeys": {
+        "notfound": "not-found"
+      },
+      "generated": true
+    }
+  ],
+  "redirects": [],
+  "rewrites": [],
+  "assets": {
+    "css": [],
+    "js": [
+      "/_expo/static/js/web/__expo-metro-runtime-97703ae02682710149335928b974f18d.js",
+      "/_expo/static/js/web/__common-3dc9fc6030ed40e3776f5e0bf340dbcb.js",
+      "/_expo/static/js/web/entry-99693581945094647d8bcbd9fad4842a.js"
+    ],
+    "favicon": "/favicon.ico"
+  },
+  "rendering": {
+    "mode": "ssr",
+    "file": "_expo/server/render.js"
+  }
+}

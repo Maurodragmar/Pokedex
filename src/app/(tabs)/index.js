@@ -1,16 +1,42 @@
-import { useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { router } from "expo-router";
 import PokemonCard from "../../components/PokemonCard";
 import Titre from "../../components/Titre";
-import POKEMONS from "../../data/pokemons";
+
+const API = "https://pokeapi.co/api/v2/pokemon?limit=151";
 
 export default function Index() {
+  const [pokemons, setPokemons] = useState(null);
   const [capturedNumbers, setCapturedNumbers] = useState(() => new Set());
   const [showCaptures, setShowCaptures] = useState(false);
-  const displayed = showCaptures
-    ? POKEMONS.filter((pokemon) => capturedNumbers.has(pokemon.number))
-    : POKEMONS;
+
+  useEffect(() => {
+    async function charger() {
+      const response = await fetch(API);
+      const data = await response.json();
+      const liste = data.results.map((pokemon, index) => ({
+        number: index + 1,
+        name: pokemon.name,
+      }));
+      setPokemons(liste);
+    }
+
+    charger();
+  }, []);
+
+  const displayed = pokemons
+    ? showCaptures
+      ? pokemons.filter((pokemon) => capturedNumbers.has(pokemon.number))
+      : pokemons
+    : [];
 
   function toggleCaptured(number) {
     setCapturedNumbers((current) => {
@@ -22,6 +48,14 @@ export default function Index() {
       }
       return updated;
     });
+  }
+
+  if (!pokemons) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#F08030" />
+      </View>
+    );
   }
 
   return (
@@ -49,8 +83,8 @@ export default function Index() {
       renderItem={({ item }) => (
         <PokemonCard
           number={item.number}
-          name={item.name}
-          type={item.type}
+          name={item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+          type={"Normal"}
           captured={capturedNumbers.has(item.number)}
           onToggleCaptured={toggleCaptured}
           onPress={() =>
@@ -66,6 +100,12 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
+  loaderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F8F5F0",
+  },
   listContent: { padding: 16, gap: 12 },
   column: { gap: 12 },
   header: { gap: 12 },
